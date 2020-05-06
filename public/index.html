@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <meta name="author" content="Dallas Lynn">
+        <meta name="description" content="Your Life Adjusted Race Time">
+        <meta name="keywords" content="running, science">
+        <title>Life Adjusted Race Time</title>
+        <link rel='stylesheet' href='https://unpkg.com/bulma@0.8.0/css/bulma.min.css'>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.slim.min.js"></script>
+        <script src="lat.js"></script>
+
+        <style>
+         .column {
+             display: flex;
+         }
+
+         #left, #right {
+             padding: 7%;
+         }
+
+         /* .columns {
+            margin-top: 0;
+            } */
+
+         /* #right {
+            width: 100%;
+            height:100%;
+            }
+
+            @media (min-width: 769px) {
+            #right {
+            width: 50%;
+            }
+            }
+
+            #right {
+            background-position: center center;
+            background-size: cover;
+            height: 400px;
+            position: relative;
+            } */
+
+         /* @media (min-width: 769px) {
+            #right {
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            }
+            } */
+        </style>
+
+    </head>
+    <body>
+      <div class="columns">
+        <div class="column tile is-half is-parent is-vertical" id="left">
+            <article class="tile is-child pink post">
+                <p class="title is-2">Life Adjusted Race Time</p>
+                <p class="subtitle has-text-grey">Scientifically Accurate Race Time Calculator</p>
+                <div class="content has-text-grey">
+                    <p>Neither gun time nor chip time accurately reflect all the life factors that
+                        contribute to a race result.  This calculator fixes that.
+                    </p>
+                </div>
+
+                <div class="content">
+                    <div class="field">
+                        <label class="label">Race Distance</label>
+                        <div class="control">
+                            <div class="select">
+                                <select name="raceDistance" id="raceDistance">
+                                    <option>5K</option>
+                                    <option>10K</option>
+                                    <option>Half-Marathon</option>
+                                    <option>Marathon</option>
+                                    <option>Ultra-Marathon</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Finish Time (HH:MM:SS)</label>
+                        <div class="control">
+                            <input name="finishTime"
+                                   id="finishTime"
+                                   class="input"
+                                   type="text"
+                                   placeholder="Enter Your Finish Time in the proper format">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Are you married?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="isMarried" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="isMarried" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">If you are married, is your spouse a runner?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="spouseRuns" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="SpouseRuns" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many children under 18 do you have?</label>
+                        <div class="control">
+                            <input name="minorChildren"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter number of tax deductible little miracles.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many hours a week do you work?</label>
+                        <div class="control">
+                            <input name="hoursWorked"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Hours wasted on employment per week, rounded up.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">What is your age?</label>
+                        <div class="control">
+                            <input name="age"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Age in Earth years, rounded down.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many pounds would you like to lose?</label>
+                        <div class="control">
+                            <input name="poundsOverweight"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Pounds over ideal racing weight, rounded up.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Are you following a training plan?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="hadPlan" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="hadPlan" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="field">
+                        <label class="label">How many weeks did you train for this race?</label>
+                        <div class="control">
+                            <input name="trainingWeeks"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter how long your training plan was, or 0.">
+                        </div>
+                    </div>
+
+
+                    <div class="field">
+                        <label class="label">How many alcohol units do you imbibe per week?</label>
+                        <div class="control">
+                            <input name="alcoholUnits"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter units per week, rounded down.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Did you have a pacer?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="hadPacer" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="hadPacer" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Did you have a coach?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="hadCoach" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="hadCoach" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">What percentage of your workouts did you post to social media?</label>
+                        <div class="control">
+                            <input name="attentionQuotient"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter your attention quotient, rounded up.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Are you of East African descent?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="isEastAfrican" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="isEastAfrican" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many years have you been running?</label>
+                        <div class="control">
+                            <input name="yearsRunning"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter years running, rounded up.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many medications are you on?</label>
+                        <div class="control">
+                            <input name="medicationCount"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter your Rx pickups, including street doctors.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Was this a destination race?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="destinationRace" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="destinationRace" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Did you credit God for any part of your training or result?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="isReligious" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="isReligious" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Are you attractive?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="isAttractive" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="isAttractive" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="field">
+                        <label class="label">How many miles did you travel to the race?</label>
+                        <div class="control">
+                            <input name="milesToRace"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter number of miles travelled.">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">What was the temperature in Farenheit at the end of the race?</label>
+                        <div class="control">
+                            <input name="maxRaceTemp"
+                                   class="input"
+                                   type="number"
+                                   placeholder="Enter the temperature in imperialist units.">
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link">Submit</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-link is-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </article>
+        </div>
+
+
+        <div class="column tile is-half is-parent is-vertical" id="right">
+            <article class="tile is-child pink post">
+                <p class="title is-2">Adjustment Explanations</p>
+
+                <div class="content">
+                    <div class="field">
+                        Distance: Half-Marathon
+                        Distance in meters: XXXX
+                        Distance in feet: XXXXX
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Finish Time (HH:MM:SS)</label>
+                        Finish Time in Seconds: XXXX
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Are you married?</label>
+                        Single people should run faster, what else have they got to do?
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many children under 18 do you have?</label>
+                        Your no-doubt gifted and talented progeny are a joy and blessing every day.
+                        Except race day of course, when you remember how much more time you could have
+                        had to train and how you could have afforded those fancy Nikes.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many hours a week do you work?</label>
+                        "Work is the curse of the drinking class", and of race times.  Studies show work gives
+                        less time for running, recovery, and is generally bullshit.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">What is your age?</label>
+                        Age is just a number...that represents how much the grim specter has sapped your
+                        vitality.
+                        It's unfair that races shouldn't all be run in one's prime, so we adjust accordingly.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many pounds would you like to lose?</label>
+                        More weight makes it harder to run, and losing weight is one of the most efficient
+                        ways to get faster, but what are you gonna give up, alcohol?  Ice cream?  Nonsense.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Did you follow a training plan?</label>
+                        If you are, you should go faster.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many weeks did you train for this race?</label>
+                        It's not fair that you went slower just because you didn't prepare.  Let's fix that.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many alcohol units do you imbibe per week?</label>
+                        The cause and solution to all life's problems is also a cause of slower times.
+                        We adjust for what you should have run if you weren't constantly dehydrated.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Did you have a pacer?</label>
+                        If you can find someone to run a race at your behest, you should go faster.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Did you have a coach?</label>
+                        TODO: Add, 'Did you listen to them?' as a followup question.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">
+                            What percentage of your workouts did you post to social media?
+                        </label>
+                        Knowing all your friends, followers and stalkers may be privy to your shame should
+                        have incentivized you to go faster.  Introverts need their time adjusted to account
+                        for what they would have run with social pressure.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Are you of East African descent?</label>
+                        If you are related to the Gods of the Game, of the same blessed gene pool as
+                        Haile, Bekele and Kipchoge, you need to represent.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many years have you been running?</label>
+                        They say it doesn't get easier you just get faster.
+                        That's true, until the grim specter of aging saps your vitality.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">How many medications are you on?</label>
+                        It's not fair to have your time penalized because everything you do is undermined
+                        by everything you think.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Was this a destination race?</label>
+                        Everybody knows these are for destinations first and running second.  Adjust to what
+                        it should be on a normal course.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Did you credit God for any part of your training or result?</label>
+                        It's not really fair if you called on God and it actually worked, adjust for human
+                        times.  Also, if you were representing a deity you should step up your game, we
+                        adjust for secular motivation.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Are you attractive?</label>
+                        Us very attractive people are not well-liked, but it has to be admitted that
+                        everything in life is easier the better looking you are.  Too easy.  Adjust for
+                        normal life difficulty.
+                    </div>
+
+
+                    <div class="field">
+                        <label class="label">How many miles did you travel to the race?</label>
+                        Not fair that only the miles actually run are counted.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">
+                            What was the temperature in Farenheit at the end of the race?
+                        </label>
+                        Heat steals your vital fluids.  Adjust for full-fluidity.
+                    </div>
+
+                    <div class="field is-grouped">
+                        Life Adjusted Time: XX:YY:ZZ
+                    </div>
+                </div>
+
+
+            </article>
+
+        </div>
+
+        <script>
+          const t = new LifeAdjustedTime();
+          $('div.content').change((e) => t.updateValue(e));
+        </script>
+      </div> <!-- columns -->
+    </body>
+</html>
