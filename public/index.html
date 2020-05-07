@@ -16,40 +16,13 @@
              display: flex;
          }
 
-         #left, #right {
+         #left, #right, #results {
              padding: 7%;
          }
 
-         /* .columns {
-            margin-top: 0;
-            } */
-
-         /* #right {
-            width: 100%;
-            height:100%;
-            }
-
-            @media (min-width: 769px) {
-            #right {
-            width: 50%;
-            }
-            }
-
-            #right {
-            background-position: center center;
-            background-size: cover;
-            height: 400px;
-            position: relative;
-            } */
-
-         /* @media (min-width: 769px) {
-            #right {
-            height: 100vh;
-            position: fixed;
-            right: 0;
-            top: 0;
-            }
-            } */
+         #results {
+             padding-top: 0;
+         }
         </style>
 
     </head>
@@ -66,21 +39,6 @@
                 </div>
 
                 <div class="content">
-                    <div class="field">
-                        <label class="label">Race Distance</label>
-                        <div class="control">
-                            <div class="select">
-                                <select name="raceDistance" id="raceDistance">
-                                    <option>5K</option>
-                                    <option>10K</option>
-                                    <option>Half-Marathon</option>
-                                    <option>Marathon</option>
-                                    <option>Ultra-Marathon</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="field">
                         <label class="label">Finish Time (HH:MM:SS)</label>
                         <div class="control">
@@ -100,7 +58,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="isMarried" value="no">
+                                <input type="radio" name="isMarried" value="">
                                 No
                             </label>
                         </div>
@@ -114,7 +72,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="SpouseRuns" value="no">
+                                <input type="radio" name="SpouseRuns" value="">
                                 No
                             </label>
                         </div>
@@ -168,7 +126,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="hadPlan" value="no">
+                                <input type="radio" name="hadPlan" value="">
                                 No
                             </label>
                         </div>
@@ -204,7 +162,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="hadPacer" value="no">
+                                <input type="radio" name="hadPacer" value="">
                                 No
                             </label>
                         </div>
@@ -218,7 +176,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="hadCoach" value="no">
+                                <input type="radio" name="hadCoach" value="">
                                 No
                             </label>
                         </div>
@@ -242,7 +200,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="isEastAfrican" value="no">
+                                <input type="radio" name="isEastAfrican" value="">
                                 No
                             </label>
                         </div>
@@ -276,7 +234,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="destinationRace" value="no">
+                                <input type="radio" name="destinationRace" value="">
                                 No
                             </label>
                         </div>
@@ -290,7 +248,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="isReligious" value="no">
+                                <input type="radio" name="isReligious" value="">
                                 No
                             </label>
                         </div>
@@ -304,7 +262,7 @@
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="isAttractive" value="no">
+                                <input type="radio" name="isAttractive" value="">
                                 No
                             </label>
                         </div>
@@ -333,10 +291,7 @@
 
                     <div class="field is-grouped">
                         <div class="control">
-                            <button class="button is-link">Submit</button>
-                        </div>
-                        <div class="control">
-                            <button class="button is-link is-light">Cancel</button>
+                            <button class="button is-link">Start Over</button>
                         </div>
                     </div>
                 </div>
@@ -350,17 +305,6 @@
                 <p class="title is-2">Adjustment Explanations</p>
 
                 <div class="content">
-                    <div class="field">
-                        Distance: Half-Marathon
-                        Distance in meters: XXXX
-                        Distance in feet: XXXXX
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Finish Time (HH:MM:SS)</label>
-                        Finish Time in Seconds: XXXX
-                    </div>
-
                     <div class="field">
                         <label class="label">Are you married?</label>
                         Single people should run faster, what else have they got to do?
@@ -477,21 +421,115 @@
                         </label>
                         Heat steals your vital fluids.  Adjust for full-fluidity.
                     </div>
-
-                    <div class="field is-grouped">
-                        Life Adjusted Time: XX:YY:ZZ
-                    </div>
                 </div>
 
 
             </article>
 
         </div>
-
-        <script>
-          const t = new LifeAdjustedTime();
-          $('div.content').change((e) => t.updateValue(e));
-        </script>
       </div> <!-- columns -->
+
+      <div class="columns">
+          <div class="column tile is-parent" id="results">
+              <article class="tile is-child post">
+                  <p class="title is-2">Life Adjusted Results</p>
+                  <div class="content table-container">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th><abbr title="Reason">Reason</abbr></th>
+                                  <th><abbr title="Adjustment">Adjustment</abbr></th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                  <th><abbr title="Final">Final Life Adjusted Time</abbr></th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                              <tr>
+                                  <td><strong>Married Adjustment</strong></td>
+                                  <td name="isMarriedAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Minor Children Adjustment</strong></td>
+                                  <td name="minorChildrenAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Hours Worked Adjustment</strong></td>
+                                  <td name="hoursWorkedAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Age Adjustment</strong></td>
+                                  <td name="ageAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Weight Adjustment</strong></td>
+                                  <td name="poundsOverweightAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Plan Adjustment</strong></td>
+                                  <td name="hadPlanAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Training Time Adjustment</strong></td>
+                                  <td name="trainingWeeksAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Alcohol Adjustment</strong></td>
+                                  <td name="alcoholUnitsAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Pacer Adjustment</strong></td>
+                                  <td name="hadPacerAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Coach Adjustment</strong></td>
+                                  <td name="hadCoachAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Social Media Adjustment</strong></td>
+                                  <td name="attentionQuotientAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Genetic Adjustment</strong></td>
+                                  <td name="isEastAfricanAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Mediacation Adjustment</strong></td>
+                                  <td name="medicationCountAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Destination Adjustment</strong></td>
+                                  <td name="isDestinationRaceAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Deity Adjustment</strong></td>
+                                  <td name="isReligiousAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Attractive Adjustment</strong></td>
+                                  <td name="isAttractiveAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Travel Distance Adjustment</strong></td>
+                                  <td name="milesToRaceAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Temperature Adjustment</strong></td>
+                                  <td name="maxRaceTempAdjustment"></td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </article>
+          </div>
+      </div>
+
+      <script>
+       const t = new LifeAdjustedTime();
+       const p = new Proxy(t, validator);
+       $('div.content').change((e) => p[e.target.name] = e.target.value);
+      </script>
     </body>
 </html>

@@ -1,78 +1,109 @@
+let validator = {
+    set: function(obj, prop, value) {
+        if(value === undefined) {
+            obj[prop] = value;
+            return true;
+        }
+
+        if (prop.startsWith('is') || prop.startsWith('had')) {
+            value = !!value;
+        } else if(prop === 'finishTime'){
+            const pieces = value.split(':').map(_ => parseInt(_));
+
+            if(pieces.length !== 3) {
+                return false;
+            }
+            if(pieces.findIndex((x) => Number.isNaN(x)) !== -1) {
+                return false;
+            }
+            const [hours, minutes, seconds] = pieces;
+            if((minutes < 1 || minutes > 59) || (minutes < 1 || minutes > 59)) {
+                return false;
+            }
+        } else {
+            value = parseInt(value);
+            if(Number.isNaN(value)) {
+                return false;
+            }
+        }
+
+        obj[prop] = value;
+        obj.updateAdjustments();
+
+        return true;
+    }
+};
+
 class LifeAdjustedTime {
-    constructor(isMarried) {
-        this.raceDistance = undefined;
+    constructor() {
+        this.adjustments = [
+            "isMarried", "minorChildren", "hoursWorked", "age", "poundsOverweight",
+            "hadPlan", "trainingWeeks", "alcoholUnits", "hadPacer", "hadCoach",
+            "attentionQuotient", "isEastAfrican", "medicationCount",
+            "isDestinationRace", "isReligious", "isAttractive", "milesToRace",
+            "maxRaceTemp"
+        ];
+
+        this.adjustments.forEach(a => this[a] = undefined);
         this.finishTime = undefined;
         this.finishTimeSeconds = undefined;
-        this.isMarried = undefined;
-        this.minorChildren = undefined;
-        this.hoursWorked = undefined;
-        this.age = undefined;
-        this.poundsOverweight = undefined;
-        this.hadPlan = undefined;
-        this.trainingWeeks = undefined;
-        this.alcoholUnits = undefined;
-        this.hadPacer = undefined;
-        this.hadCoach = undefined;
-        this.attentionQuotient = undefined;
-        this.isEastAfrican = undefined;
-        this.medicationCount = undefined;
-        this.destinationRace = undefined;
-        this.isReligious = undefined;
-        this.isAttractive = undefined;
-        this.milesToRace = undefined;
-        this.maxRaceTemp = undefined;
-
-        this.valueMap = {
-            finishTime: this.updateFinishTime,
-            isMarried: this.isMarriedAdjustment,
-        };
-
+        this.adjustedTimeSeconds = undefined;
+        this.currentAdjustments = {};
     }
 
-    is(value) {
-        return !(value === undefined || value === "no");
+    setCurrentAdjustment(adjustmentName) {
+        if(this[adjustmentName] === undefined) {
+            delete this.currentAdjustments[adjustmentName];
+        } else {
+            const adjustmentFunction = `${adjustmentName}Adjustment`;
+            console.log('calling ', adjustmentFunction);
+            const adjustment = this[adjustmentFunction]();
+            this.currentAdjustments[adjustmentName] = adjustment;
+        }
     }
 
-    dispatch(name) {
-        console.log(`updating ${name}`);
-        if(this[name] === name) {
-            console.log(`${name} unchanged`);
-            return;
+    updateAdjustments() {
+        if(!this.finishTimeSeconds){
+            return false;
         }
 
-        console.log(this.valueMap[name]);
+        this.adjustments.forEach(a => this.setCurrentAdjustment(a));
+        // Object.values(this.currentAdjustments).reduce((accumulator, currentValue) => accumulator + currentValue );
+        return true;
     }
 
-    updateValue(e) {
-        const updatedValue = e.target.name;
-        console.log('changed elem:', e);
-        /// this[updatedValue] = e.target.value;
-        this.dispatch(updatedValue);
+    percentageOf = (of, percent) => (percent / 100.0) * of;
+    percentageOfBaseTime = (percentage) => this.percentageOf(this.finishTimeSeconds, percentage);
+
+    /// eg. 3:45:00 -> 13500
+    timeToSeconds(t) {
+        const pieces = t.split(':').map(_ => parseInt(_));
+        const [hours, minutes, seconds] = pieces;
+        return (hours * 3600) + (minutes * 60) + seconds;
     }
 
-    adjustedTime() {
-        if(!this.finishTimeseconds){
-            return undefined;
+    /// eg. 13500 -> 3:45:00
+    secondsToTime(s) {
+        let hoursPart = Math.floor(s / 3600).toString().padStart(2,'0');
+        s -= (hoursPart * 3600);
+        let minsPart = Math.floor(s / 60).toString().padStart(2,'0');
+        let secondsPart = Math.floor(s % 60).toString().padStart(2,'0');
+
+        return `${hoursPart}:${minsPart}:${secondsPart}`;
+    }
+
+    set finishTime(time) {
+        if(time === undefined) {
+            this.finishTimeSeconds = undefined;
+        } else {
+            this.finishTimeSeconds = this.timeToSeconds(time);
         }
-
-        return 1;
     }
 
-    percentageOf(of, percent) {
-        return (percent / 100.0) * of;
-    }
-
-    percentageOfBaseTime(percentage) {
-        return this.percentageOf(this.finishTimeSeconds, percentage);
-    }
-
-    set updateFinishTime(time) {
-        console.log('updating finish time to ', time);
-    }
-
-    isMarriedAdjustment = () => this.is(this.isMarried) ? this.percentageOfBaseTime(-0.5) : this.percentageOfBaseTime(0.1)
+    isMarriedAdjustment = () => this.isMarried ? this.percentageOfBaseTime(-0.5) : this.percentageOfBaseTime(0.1)
     minorChildrenAdjustment = () => this.percentageOfBaseTime(-(this.minorChildren * 0.77))
     hoursWorkedAdjustment = () => this.percentageOfBaseTime(-(this.hoursWorked * 0.02))
+
     ageAdjustment() {
         if(this.age <= 30) {
             return this.percentageOfBaseTime(0.95);
@@ -91,9 +122,10 @@ class LifeAdjustedTime {
         return 0;
     }
 
-    poundsOverweightAdjustment = () => this.percentageOfBaseTime(-(self.poundsOverweight * 0.02))
-    hadPlanAdjustent = () => this.is(this.hadPlan) ? 0 : this.percentageOfBaseTime(-0.15)
-    trainingWeeks() {
+    poundsOverweightAdjustment = () => this.percentageOfBaseTime(-(this.poundsOverweight * 0.02))
+    hadPlanAdjustment = () => this.hadPlan ? 0 : this.percentageOfBaseTime(-0.15)
+
+    trainingWeeksAdjustment() {
         if(this.trainingWeeks <= 3) {
             return this.percentageOfBaseTime(-2.03);
         } else if(this.trainingWeeks <= 11) {
@@ -106,8 +138,9 @@ class LifeAdjustedTime {
     }
 
     alcoholUnitsAdjustment = () => this.percentageOfBaseTime(this.alcoholUnits * -0.07)
-    hadPacerAdjustment = () => this.is(this.hadPacer) ? this.percentageOfBaseTime(0.25) : 0
-    hadCoachAdjustment = () => this.is(this.hadCoach) ? this.percentageOfBaseTime(2.00) : 0
+    hadPacerAdjustment = () => this.hadPacer ? this.percentageOfBaseTime(0.25) : 0
+    hadCoachAdjustment = () => this.hadCoach ? this.percentageOfBaseTime(2.00) : 0
+
     attentionQuotientAdjustment() {
         if(this.attentionQuotient < 1) {
             return this.percentageOfBaseTime(-1.00);
@@ -121,11 +154,13 @@ class LifeAdjustedTime {
             return this.percentageOfBaseTime(1.01);
         }
     }
-    isEastAfrican = () => this.is(this.isEastafrican) ? this.percentageOfBaseTime(0.96) : 0
+
+    isEastAfricanAdjustment = () => this.isEastAfrican ? this.percentageOfBaseTime(0.96) : 0
     medicationCountAdjustment = () => this.percentageOfBaseTime(this.medicationCount * -0.1)
-    destinationRaceAdjustment = () => this.is(this.destinationRace) ? this.percentageOfBaseTime(-0.5) : 0
-    isReligiousAdjustment = () => this.is(this.isReligious) ? this.percentageOfBaseTime(-1.0) : 0
-    isAttractiveAdjustment = () => this.is(this.isAttractive) ? this.percentageOfBaseTime(1.05) : 0
+    isDestinationRaceAdjustment = () => this.isDestinationRace ? this.percentageOfBaseTime(-0.5) : 0
+    isReligiousAdjustment = () => this.isReligious ? this.percentageOfBaseTime(-1.0) : 0
+    isAttractiveAdjustment = () => this.isAttractive ? this.percentageOfBaseTime(1.05) : 0
+
     milesToRaceAdjustment() {
         if(this.milesToRace < 500) {
             return 0;
@@ -133,6 +168,7 @@ class LifeAdjustedTime {
             return this.percentageOfBaseTime(-(this.milesToRace / 1000));
         }
     }
+
     maxRaceTempAdjustment() {
         if(this.maxRaceTemp < 55) {
             return 0.00;
