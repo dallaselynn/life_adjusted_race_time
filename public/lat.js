@@ -41,7 +41,7 @@ class LifeAdjustedTime {
             "hadPlan", "trainingWeeks", "alcoholUnits", "hadPacer", "hadCoach",
             "attentionQuotient", "isEastAfrican", "medicationCount",
             "isDestinationRace", "isReligious", "isAttractive", "milesToRace",
-            "maxRaceTemp"
+            "maxRaceTemp", "hadFancyClothes", "hadMedicalIssue"
         ];
 
         this.adjustments.forEach(a => this[a] = undefined);
@@ -198,4 +198,7 @@ class LifeAdjustedTime {
             return this.percentageOfBaseTime(-3.0);
         }
     }
+
+    hadFancyClothesAdjustment = () => this.hadFancyClothes ? 0 : this.percentageOfBaseTime(-0.75)
+    hadMedicalIssueAdjustment = () => this.hadMedicalIssue ? this.percentageOfBaseTime(-2.5) : 0
 }

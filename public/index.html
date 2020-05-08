@@ -275,6 +275,40 @@
                         </div>
                     </div>
 
+                    <div class="field">
+                        <label class="label">Did you race in Nike Vaporfly or any of its derivatives;
+                            wear anything from lululemon or oiselle; or wear a race singlet?</label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="hadFancyClothes" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="hadFancyClothes" value="">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">At any point in the race were you menstruating, passing a kidney
+                            stone, shitting yourself or thinking about how the inevitable heat death of all
+                            life on Earth will render your race performance, life and everything else
+                            ultimately meaningless?
+                        </label>
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="hadMedicalIssue" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="hadMedicalIssue" value="">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+
                     <!-- <div class="field is-grouped">
                          <div class="control">
                          <button class="button is-link">Start Over</button>
@@ -407,8 +441,31 @@
                         </label>
                         Heat steals your vital fluids.  Adjust for full-fluidity.
                     </div>
-                </div>
 
+                    <div class="field">
+                        <label class="label">
+                            Did you race in Nike Vaporfly or any of its derivatives;
+                            wear anything from lululemon or oiselle; or wear a race singlet?
+                        </label>
+                        Let's face it, you would have gone faster in those things, the springs in the shoes,
+                        your own vanity, living up to the clothing would have demanded it.
+
+                        Adjust for the time you would have run in fancy pants.
+                    </div>
+
+                    <div class="field">
+                        <label class="label">
+                            At any point in the race were you menstruating, passing a kidney
+                            stone, shitting yourself or thinking about how the inevitable heat death of all
+                            life on Earth will render your race performance, life and everything else
+                            ultimately meaningless?
+                        </label>
+                        You didn't choose any of those things, but you have to live with them.  That's not
+                        fair to your time.
+
+                        Adjust for what you would have run in normal health, physical and mental.
+                    </div>
+                </div>
 
             </article>
 
@@ -509,6 +566,14 @@
                               <tr>
                                   <td><strong>Temperature Adjustment</strong></td>
                                   <td name="maxRaceTempAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Fancy-Pants Adjustment</strong></td>
+                                  <td name="hadFancyClothesAdjustment"></td>
+                              </tr>
+                              <tr>
+                                  <td><strong>Medical Exemption Adjustment</strong></td>
+                                  <td name="hadMedicalIssueAdjustment"></td>
                               </tr>
                           </tbody>
                       </table>
