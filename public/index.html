@@ -65,20 +65,6 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">If you are married, is your spouse a runner?</label>
-                        <div class="control">
-                            <label class="radio">
-                                <input type="radio" name="spouseRuns" value="yes">
-                                Yes
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="SpouseRuns" value="">
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="field">
                         <label class="label">How many children under 18 do you have?</label>
                         <div class="control">
                             <input name="minorChildren"
@@ -230,11 +216,11 @@
                         <label class="label">Was this a destination race?</label>
                         <div class="control">
                             <label class="radio">
-                                <input type="radio" name="destinationRace" value="yes">
+                                <input type="radio" name="isDestinationRace" value="yes">
                                 Yes
                             </label>
                             <label class="radio">
-                                <input type="radio" name="destinationRace" value="">
+                                <input type="radio" name="isDestinationRace" value="">
                                 No
                             </label>
                         </div>
@@ -443,7 +429,12 @@
                           </thead>
                           <tfoot>
                               <tr>
+                                  <th><abbr title="Total">Total Adjustments</abbr></th>
+                                  <td name="totalAdjustments"></td>
+                              </tr>
+                              <tr>
                                   <th><abbr title="Final">Final Life Adjusted Time</abbr></th>
+                                  <td name="finalAdjustedTime"></td>
                               </tr>
                           </tfoot>
                           <tbody>
@@ -496,7 +487,7 @@
                                   <td name="isEastAfricanAdjustment"></td>
                               </tr>
                               <tr>
-                                  <td><strong>Mediacation Adjustment</strong></td>
+                                  <td><strong>Medication Adjustment</strong></td>
                                   <td name="medicationCountAdjustment"></td>
                               </tr>
                               <tr>
@@ -529,7 +520,20 @@
       <script>
        const t = new LifeAdjustedTime();
        const p = new Proxy(t, validator);
-       $('div.content').change((e) => p[e.target.name] = e.target.value);
+       function handleChange(e) {
+           console.log('handling change', e);
+           p[e.target.name] = e.target.value;
+
+           for (let [key, value] of Object.entries(t.currentAdjustments)) {
+               $(`td[name=${key}Adjustment]`).text(t.secondsToTime(t.currentAdjustments[key]));
+           }
+
+           let total = t.totalAdjustment();
+
+           $('td[name=totalAdjustments]').text(`${t.secondsToTime(total)} (${total}s)`);
+               /// $('td[name=finalAdjustedTime]').text(t.secondsToTime(t.adjustedTime()));
+           }
+           $('div.content').change(handleChange);
       </script>
     </body>
 </html>

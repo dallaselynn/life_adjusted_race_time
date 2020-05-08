@@ -56,10 +56,18 @@ class LifeAdjustedTime {
             delete this.currentAdjustments[adjustmentName];
         } else {
             const adjustmentFunction = `${adjustmentName}Adjustment`;
-            console.log('calling ', adjustmentFunction);
             const adjustment = this[adjustmentFunction]();
             this.currentAdjustments[adjustmentName] = adjustment;
         }
+    }
+
+    totalAdjustment() {
+        const values = Object.values(this.currentAdjustments);
+        if(values.length === 0) {
+            return 0;
+        }
+
+        return values.reduce((accumulator, currentValue) => accumulator + currentValue);
     }
 
     updateAdjustments() {
@@ -68,9 +76,12 @@ class LifeAdjustedTime {
         }
 
         this.adjustments.forEach(a => this.setCurrentAdjustment(a));
-        // Object.values(this.currentAdjustments).reduce((accumulator, currentValue) => accumulator + currentValue );
         return true;
     }
+
+    // adjustedTime() {
+    //     return this.finishTimeSeconds + this.totalAdjustment();
+    // }
 
     percentageOf = (of, percent) => (percent / 100.0) * of;
     percentageOfBaseTime = (percentage) => this.percentageOf(this.finishTimeSeconds, percentage);
@@ -84,12 +95,15 @@ class LifeAdjustedTime {
 
     /// eg. 13500 -> 3:45:00
     secondsToTime(s) {
+        const minusSign = s < 0 ? "-" : "";
+
+        s = Math.abs(s);
         let hoursPart = Math.floor(s / 3600).toString().padStart(2,'0');
         s -= (hoursPart * 3600);
         let minsPart = Math.floor(s / 60).toString().padStart(2,'0');
         let secondsPart = Math.floor(s % 60).toString().padStart(2,'0');
 
-        return `${hoursPart}:${minsPart}:${secondsPart}`;
+        return `${minusSign}${hoursPart}:${minsPart}:${secondsPart}`;
     }
 
     set finishTime(time) {
