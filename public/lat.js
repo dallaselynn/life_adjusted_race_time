@@ -79,9 +79,13 @@ class LifeAdjustedTime {
         return true;
     }
 
-    // adjustedTime() {
-    //     return this.finishTimeSeconds + this.totalAdjustment();
-    // }
+    adjustedTime() {
+        if(this.finishTimeSeconds === undefined) {
+            return;
+        }
+
+        return this.finishTimeSeconds + this.totalAdjustment();
+    }
 
     percentageOf = (of, percent) => (percent / 100.0) * of;
     percentageOfBaseTime = (percentage) => this.percentageOf(this.finishTimeSeconds, percentage);

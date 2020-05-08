@@ -521,7 +521,6 @@
        const t = new LifeAdjustedTime();
        const p = new Proxy(t, validator);
        function handleChange(e) {
-           console.log('handling change', e);
            p[e.target.name] = e.target.value;
 
            for (let [key, value] of Object.entries(t.currentAdjustments)) {
@@ -529,11 +528,11 @@
            }
 
            let total = t.totalAdjustment();
-
            $('td[name=totalAdjustments]').text(`${t.secondsToTime(total)} (${total}s)`);
-               /// $('td[name=finalAdjustedTime]').text(t.secondsToTime(t.adjustedTime()));
-           }
-           $('div.content').change(handleChange);
+           let finalTime = t.adjustedTime();
+           $('td[name=finalAdjustedTime]').text(`${t.secondsToTime(finalTime)} (${finalTime}s)`);
+       }
+       $('div.content').change(handleChange);
       </script>
     </body>
 </html>
