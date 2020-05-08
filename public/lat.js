@@ -16,10 +16,10 @@ let validator = {
             if(pieces.findIndex((x) => Number.isNaN(x)) !== -1) {
                 return false;
             }
-            const [hours, minutes, seconds] = pieces;
-            if((minutes < 1 || minutes > 59) || (minutes < 1 || minutes > 59)) {
-                return false;
-            }
+            // const [hours, minutes, seconds] = pieces;
+            // if((minutes < 0 || minutes > 59) || (seconds < 0 || seconds > 59)) {
+            //     return false;
+            // }
         } else {
             value = parseInt(value);
             if(Number.isNaN(value)) {
